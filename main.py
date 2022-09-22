@@ -31,10 +31,9 @@ def modify_label(search_label=args['search'], replace_label=args['replace']):
         with open(anno, 'r') as file:
             lines = file.readlines()
         
-        # modify the label
+        # modify the class labels
         for line in lines:
 
-            #new_line = ''
             found = False
 
             for i, char in enumerate(line):
@@ -56,7 +55,5 @@ def modify_label(search_label=args['search'], replace_label=args['replace']):
     os.chdir(curr_dir)
 
 
-
 if __name__ == '__main__':
-
     modify_label()
