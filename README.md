@@ -1,7 +1,7 @@
 Edit the class labels of YOLO annotation files. 
 
 ### Usage
-python3 yolo_label_change.py --search '< label to change >' --replace '< label to be changed with >'
+python3 main.py --search < label to change > --replace < label to be changed with >
 
 ### Requirements
 1. Python 3
