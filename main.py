@@ -3,21 +3,17 @@ import sys
 import argparse
 
 parser = argparse.ArgumentParser()
+parser.add_argument('-p', '--path', type=str, required=True, 
+                    help='Path to save the data on your system')
 parser.add_argument('-s', '--search', type=str, required=True,
                     help='The label to be modified')
 parser.add_argument('-r', '--replace', type=str, required=True,
                     help='The label to replace with')
 args = vars(parser.parse_args())
 
+
 curr_dir = os.getcwd()
-
-if not os.path.exists('./dataset'):
-    sys.exit("Folder 'dataset' does not exist. Please store all annotation files inside the ./dataset folder.")
-
-os.chdir(os.path.join(curr_dir, 'dataset'))
-
-if len(os.listdir(os.getcwd())) == 0:
-    sys.exit("No annotation files found.")
+os.chdir(args['path'])
 
 # collect all annotations from the directory
 annotations = []
@@ -27,6 +23,8 @@ for file in sorted(os.listdir(os.getcwd())):
     if file.endswith('.txt') and file != 'classes.txt':
         annotations.append(file)
 
+if len(annotations) == 0:
+    sys.exit("No annotation files found.")
 
 def modify_label(search_label=args['search'], replace_label=args['replace']):
 
@@ -58,7 +56,7 @@ def modify_label(search_label=args['search'], replace_label=args['replace']):
         with open(anno, 'w') as file:
             file.writelines(new_lines)
     
-    print('Finished!')
+    print('Done!')
     os.chdir(curr_dir)
 
 
