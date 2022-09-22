@@ -1,4 +1,5 @@
 import os
+import sys
 import argparse
 
 parser = argparse.ArgumentParser()
@@ -9,7 +10,14 @@ parser.add_argument('-r', '--replace', type=str, required=True,
 args = vars(parser.parse_args())
 
 curr_dir = os.getcwd()
+
+if not os.path.exists('./dataset'):
+    sys.exit("Folder 'dataset' does not exist. Please store all annotation files inside the ./dataset folder.")
+
 os.chdir(os.path.join(curr_dir, 'dataset'))
+
+if len(os.listdir(os.getcwd())) == 0:
+    sys.exit("No annotation files found.")
 
 # collect all annotations from the directory
 annotations = []
@@ -18,7 +26,6 @@ for file in sorted(os.listdir(os.getcwd())):
     # grab only the .txt files to modify
     if file.endswith('.txt') and file != 'classes.txt':
         annotations.append(file)
-
 
 
 def modify_label(search_label=args['search'], replace_label=args['replace']):
