@@ -1,50 +1,62 @@
 import os
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-s', '--search', type=str, required=True,
+                    help='The label to be modified')
+parser.add_argument('-r', '--replace', type=str, required=True,
+                    help='The label to replace with')
+args = vars(parser.parse_args())
 
 curr_dir = os.getcwd()
-
-#if not os.path.exists('./dataset'):
-    #os.makedirs('./dataset')
-
 os.chdir(os.path.join(curr_dir, 'dataset'))
-annotations = [] 
 
+# collect all annotations from the directory
+annotations = []
 for file in sorted(os.listdir(os.getcwd())):
 
     # grab only the .txt files to modify
     if file.endswith('.txt') and file != 'classes.txt':
         annotations.append(file)
 
-#print(len(annotations))
 
-for anno in annotations:
 
-    new_lines = []
+def modify_label(search_label=args['search'], replace_label=args['replace']):
 
-    # read all lines of the .txt file
-    with open(anno, 'r') as file:
-        lines = file.readlines()
+    for anno in annotations:
     
-    #print(lines)
+        new_lines = []
 
-    # modify the lines accordingly
-    for line in lines:
-
-        line_list = list(line)
+        # read all lines of the .txt file
+        with open(anno, 'r') as file:
+            lines = file.readlines()
         
-        # edit the required logic here
-        if line_list[0] == '0':
-            line_list[0] = '80'
-        if line_list[0] == '1':
-            line_list[0] = '81'
+        # modify the label
+        for line in lines:
 
-        line = ''.join(line_list)
-        new_lines.append(line)
-        #print(line)
+            #new_line = ''
+            found = False
+
+            for i, char in enumerate(line):
+                
+                if char == ' ' and line[:i] == search_label:
+                    new_line = replace_label + ' ' + line[i+1:]
+                    found = True
+            
+            if not found:
+                new_line = line
+
+            new_lines.append(new_line)
+                    
+        # write back to the file
+        with open(anno, 'w') as file:
+            file.writelines(new_lines)
     
-    # write back modified lines to the file
-    with open(anno, 'w') as file:
-        file.writelines(new_lines)
-        
+    print('Finished!')
+    os.chdir(curr_dir)
 
-os.chdir(curr_dir)
-print('Finished!')
+
+
+if __name__ == '__main__':
+
+    modify_label()

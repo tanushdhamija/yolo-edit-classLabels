@@ -1,5 +1,8 @@
-Edit the class labels of YOLO-like annotation files. 
+Edit the class labels of YOLO annotation files. 
 
-## To-do
-1. Currently it only works to modify class labels from 0-9 i.e. single digit values
-2. Add support to modify any valued class label
+### Usage
+python3 yolo_label_change.py --search '< label to change >' --replace '< label to be changed with >'
+
+### Requirements
+1. Python 3
+2. The annotation (.txt) files should be stored inside a folder with name "dataset" within the root directory
