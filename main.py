@@ -46,6 +46,7 @@ def modify_label(search_label=args['search'], replace_label=args['replace']):
                 if char == ' ' and line[:i] == search_label:
                     new_line = replace_label + ' ' + line[i+1:]
                     found = True
+                    break
             
             if not found:
                 new_line = line
